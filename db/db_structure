@@ -1,0 +1,22 @@
+users = {
+    'email':
+        {
+            'fname':'string',
+            'lname':'string',
+            'password':'any',
+            'mobile':'10 digits'
+        }
+    }
+
+projects = {
+    'email':
+            { "ID" :
+                {
+                    'title' : 'string',
+                    'details' : 'any',
+                    'target' : 'digits',
+                    'start' : 'date formula dd-mm-yyyy',
+                    'end' : 'date formula dd-mm-yyyy'
+                }
+            }
+    }
