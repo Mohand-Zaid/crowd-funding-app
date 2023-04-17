@@ -16,7 +16,9 @@ def prompt_functions(user_email, user_prompt):
         view_db(user_email, projects)
 
     elif user_prompt in ['view','v'] :
-        view_db(user_email, projects[user_email]) #need test (err when viewing new user projects)
+        if projects[user_email] :
+            check_projects_db(user_email)
+            view_db(user_email, projects[user_email]) #need test (err when viewing new user projects)
 
     elif user_prompt == 'create':
         create_fund(user_email)
@@ -123,7 +125,19 @@ def main():
 
         elif main_prompt in ['register', 'r'] :
             try:
-                registration()
+                print('\nCrowd-Funding Registration\n')
+
+                user_data = {"email":'',"fname":'', "lname":'', "password":'', "mobile":''}
+                user_data['fname'] = input('\tFirst Name : ').lower().strip()
+                user_data['lname'] = input('\tLast Name : ').lower().strip()
+
+                user_data['email'] = input('\tEmail : ')
+
+                user_data['password'] = input('\tPassword : ').strip()
+                confirm_pass = input('\tConfirm-Password : ').strip()
+                user_data['mobile'] = input('\tMobile : (+20) ').strip()
+
+                registration(user_data, confirm_pass)
             except KeyboardInterrupt :
                 print()
 

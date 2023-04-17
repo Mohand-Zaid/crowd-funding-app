@@ -41,11 +41,15 @@ def check_valid(input_from_user, check):
 
     elif check == 'date' :
         pattern = r'\d{1,2}-\d{1,2}-\d{4}'
-    
-    elif check == 'string' :
-        if not input_from_user.isalpha():
+
+    elif check == 'username' :
+        if not input_from_user.isalpha() :
             return False
         return True
+
+    elif check == 'string' :
+        return all(i.isalpha() or i.isspace() for i in input_from_user)
+
 
     matched = re.search(pattern,input_from_user)
     if matched :
@@ -61,39 +65,27 @@ def check_password(pass_from_db, pass_from_user):
 
 
 @safe_exit
-def registration(arg1=None, arg2=None):
+def registration(user_data, conf_pass):
 
     global users, projects
 
-    print('\nCrowd-Funding Registration\n')
-
-    user_data = {"fname":'', "lname":'', "password":'', "mobile":''}
-    user_data['fname'] = input('\tFirst Name : ').lower().strip()
-    user_data['lname'] = input('\tLast Name : ').lower().strip()
-
-    email = input('\tEmail : ')
-
-    user_data['password'] = input('\tPassword : ').strip()
-    confirm_pass = input('\tConfirm-Password : ').strip()
-    user_data['mobile'] = input('\tMobile : (+20) ').strip()
-
-    if  not check_valid(user_data['fname'], 'string') or \
-        not check_valid(user_data['lname'], 'string'):
+    if  not check_valid(user_data['fname'], 'username') or \
+        not check_valid(user_data['lname'], 'username'):
         print("Invalid Name.")
 
-    if not check_valid(email, 'email'):
+    elif not check_valid(user_data['email'], 'email'):
         print("Invalid Email.")
 
-    if user_data['password'] != confirm_pass:
+    elif user_data['password'] != conf_pass:
         print("Passwords do not match.")
 
-    if not check_valid(user_data['mobile'], 'mobile') :
+    elif not check_valid(user_data['mobile'], 'mobile') :
         print("Invalid mobile phone number.")
 
     else:
         print("\nRegistration successful!")
-        users.update({email:user_data})
-        projects.update({email:{}})
+        users.update({user_data['email']:user_data})
+        projects.update({user_data['email']:{}})
         save_db(users, 'users.json')
 
 
