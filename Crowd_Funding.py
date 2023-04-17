@@ -1,4 +1,5 @@
 import sys
+
 from prompt import main
 
 if __name__ == '__main__':

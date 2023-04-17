@@ -1,4 +1,7 @@
 import re, os, sys
+import time
+import random
+
 
 from database import load_db, save_db
 
@@ -9,12 +12,11 @@ from database import load_db, save_db
 users = load_db('users.json')
 projects = load_db('projects.json')
 
-
-start_id = 100
 def id_gen():
-    global start_id
-    start_id += 1
-    return str(start_id)
+    current_time = int(time.time())
+    random_number = random.randint(0, 9999)
+    
+    return f"{current_time}{random_number}"
 
     
 def safe_exit(fun):

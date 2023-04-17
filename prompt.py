@@ -1,8 +1,10 @@
 import os , sys
+
+from app_core import *
+
 from termcolor import colored
 import pyfiglet
 
-from app_core import *
 
 
 def prompt_functions(user_email, user_prompt):
