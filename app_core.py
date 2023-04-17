@@ -84,6 +84,7 @@ def registration(user_data, conf_pass):
 
     else:
         print("\nRegistration successful!")
+        user_data.pop('confirm_pass')
         users.update({user_data['email']:user_data})
         projects.update({user_data['email']:{}})
         save_db(users, 'users.json')
@@ -108,21 +109,20 @@ def projects_ds():
     return user_fund
 
 
-def create_fund(user_email):
+def create_fund(user_email, project_info):
     global projects
 
     check_projects_db(user_email)
 
-    user_fund = projects_ds()
+    user_fund = project_info
 
-    if  not check_valid(user_fund['title'], 'string') or \
-        not check_valid(user_fund['details'], 'string') :
-        print('Title and Details must be alphabits only.')
-
-    if not user_fund['target'].isdigit():
+    if  not check_valid(user_fund['title'], 'string') :
+        print('Title must be alphabets only.')
+    
+    elif not user_fund['target'].isdigit():
         print('Enter Total Target In Digits.')
     
-    if  not check_valid(user_fund['start'], 'date') or \
+    elif  not check_valid(user_fund['start'], 'date') or \
         not check_valid(user_fund['end'], 'date') :
         print('Incorrect date formula.')
 
