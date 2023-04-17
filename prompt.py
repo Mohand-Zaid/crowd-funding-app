@@ -6,33 +6,6 @@ from termcolor import colored
 import pyfiglet
 
 
-def registration_temp():
-    user_data = {"email":'',"fname":'', "lname":'', "password":'',"confirm_pass":'', "mobile":''}
-    user_data['fname'] = input('\tFirst Name : ').lower().strip()
-    user_data['lname'] = input('\tLast Name : ').lower().strip()
-
-    user_data['email'] = input('\tEmail : ')
-
-    user_data['password'] = input('\tPassword : ').strip()
-    user_data['confirm_pass'] = input('\tConfirm-Password : ').strip()
-    user_data['mobile'] = input('\tMobile : (+20) ').strip()
-
-    return user_data
-
-
-def project_temp():
-    user_fund = {"title":"", "details":"", "target":"", "start":"", "end":""}
-
-    user_fund['title'] = input('\tTitle : ').title().strip()
-    user_fund['details'] = input('\tDetails : ').lower().strip()
-    user_fund['target'] = input('\tTotal Target : ').lower().strip()
-    user_fund['start'] = input('\tStart Date dd-mm-yyyy : ').lower().strip()
-    user_fund['end'] = input('\tEnd Date dd-mm-yyyy : ').lower().strip()
-
-    return user_fund
-
-
-
 def prompt_functions(user_email, user_prompt):
 
     if user_prompt in ['help', 'h'] :
@@ -48,13 +21,28 @@ def prompt_functions(user_email, user_prompt):
 
     elif user_prompt == 'create':
         project_info = project_temp()
-        create_fund(user_email, project_info)
+        create_status = create_fund(user_email, project_info)
+
+        if create_status :
+            print(create_status)
 
     elif user_prompt == 'edit' :
-        edit_delete(user_email, 'edit')
+        project_id = input(f"(EDIT) Project ID : ").strip().lower()
+
+        edit_status = edit_delete(user_email, 'edit', project_id)
+        
+        if not edit_status :
+            print("(EDIT) done.")
+        else :
+            print(f"\n(EDIT) {edit_status}")
+        
 
     elif user_prompt == 'delete' :
-        edit_delete(user_email, 'delete')
+        project_id = input(f"(DELETE) Project ID : ").strip().lower()
+        delete_status = edit_delete(user_email, 'delete', project_id)
+
+        if not delete_status :
+            print("(DELETE) done.")
     
     elif user_prompt == 'search' :
         srch_date = input('(SEARCH dd-mm-yyyy) : ')

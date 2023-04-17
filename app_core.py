@@ -7,7 +7,6 @@ from database import load_db, save_db
 
 # Note : add uniqe email checker in registiration
 # Note : check valid date 
-# Note : check validation of new data (edit)
 
 users = load_db('users.json')
 projects = load_db('projects.json')
@@ -17,6 +16,32 @@ def id_gen():
     random_number = random.randint(0, 9999)
     
     return f"{current_time}{random_number}"
+
+
+def registration_temp():
+    user_data = {"email":'',"fname":'', "lname":'', "password":'',"confirm_pass":'', "mobile":''}
+    user_data['fname'] = input('\tFirst Name : ').lower().strip()
+    user_data['lname'] = input('\tLast Name : ').lower().strip()
+
+    user_data['email'] = input('\tEmail : ')
+
+    user_data['password'] = input('\tPassword : ').strip()
+    user_data['confirm_pass'] = input('\tConfirm-Password : ').strip()
+    user_data['mobile'] = input('\tMobile : (+20) ').strip()
+
+    return user_data
+
+
+def project_temp():
+    user_fund = {"title":"", "details":"", "target":"", "start":"", "end":""}
+
+    user_fund['title'] = input('\tTitle : ').title().strip()
+    user_fund['details'] = input('\tDetails : ').lower().strip()
+    user_fund['target'] = input('\tTotal Target : ').lower().strip()
+    user_fund['start'] = input('\tStart Date dd-mm-yyyy : ').lower().strip()
+    user_fund['end'] = input('\tEnd Date dd-mm-yyyy : ').lower().strip()
+
+    return user_fund
 
     
 def safe_exit(fun):
@@ -64,6 +89,19 @@ def check_password(pass_from_db, pass_from_user):
     return True
 
 
+def check_project_info(check_project) :
+
+    if  not check_valid(check_project['title'], 'string') :
+        return 'Title must be alphabets only.'
+    
+    if not check_project['target'].isdigit():
+        return 'Total target must be digits only.'
+    
+    if  not check_valid(check_project['start'], 'date') or \
+        not check_valid(check_project['end'], 'date') :
+        return 'Incorrect date formula.'
+
+
 @safe_exit
 def registration(user_data, conf_pass):
 
@@ -97,67 +135,50 @@ def check_projects_db(user_email):
         projects.update({user_email:{}})
 
 
-def projects_ds():
-    user_fund = {"title":"", "details":"", "target":"", "start":"", "end":""}
-
-    user_fund['title'] = input('\tTitle : ').title().strip()
-    user_fund['details'] = input('\tDetails : ').lower().strip()
-    user_fund['target'] = input('\tTotal Target : ').lower().strip()
-    user_fund['start'] = input('\tStart Date dd-mm-yyyy : ').lower().strip()
-    user_fund['end'] = input('\tEnd Date dd-mm-yyyy : ').lower().strip()
-
-    return user_fund
-
-
 def create_fund(user_email, project_info):
     global projects
 
     check_projects_db(user_email)
 
     user_fund = project_info
+    check_project_info(user_fund)
 
-    if  not check_valid(user_fund['title'], 'string') :
-        print('Title must be alphabets only.')
-    
-    elif not user_fund['target'].isdigit():
-        print('Enter Total Target In Digits.')
-    
-    elif  not check_valid(user_fund['start'], 'date') or \
-        not check_valid(user_fund['end'], 'date') :
-        print('Incorrect date formula.')
-
-    else :
-        user_project = projects[user_email]
-        user_project[id_gen()] = user_fund
-        save_db(projects, 'projects.json')
+    user_project = projects[user_email]
+    user_project[id_gen()] = user_fund
+    save_db(projects, 'projects.json')
 
 
-# Note : check validation of new data
-def edit_delete(user_email, func):
+def edit_delete(user_email, func, project_id):
     
     global projects
 
     check_projects_db(user_email)
 
-    project_id = input(f"({func.upper()}) Project ID : ").strip().lower()
-    user_project = projects[user_email]
+    user_projects = projects[user_email]
 
-    if project_id in user_project :
+    if project_id in user_projects :
 
         if func == 'delete' :
-            user_project.pop(project_id)
+            user_projects.pop(project_id)
             save_db(projects, 'projects.json')
+            return
        
         elif func == 'edit' :
-            fund_update = projects_ds()
+            fund_update = project_temp()
 
             for key, value in fund_update.items() :
-                if value :
-                    user_project[project_id].update({key:value})
-                    save_db(projects, 'projects.json')
+                if not value :
+                    fund_update[key] = user_projects[project_id][key]
+
+            edit_check = check_project_info(fund_update)
+            if edit_check :
+                return f'\n(EDIT) {edit_check}'
+
+            user_projects[project_id].update(fund_update)
+            save_db(projects, 'projects.json')
 
     else :
-        print('Permission Denied')
+        return "Permission Denied"
     
     
 def format_project_details(project_details):
