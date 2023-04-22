@@ -3,6 +3,7 @@ users = {
         {
             'fname':'string',
             'lname':'string',
+            'email':'email',
             'password':'any',
             'mobile':'10 digits'
         }

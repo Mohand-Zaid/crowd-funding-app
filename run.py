@@ -1,3 +1,4 @@
+#!/bin/python3
 import sys
 
 from prompt import main
@@ -8,11 +9,9 @@ if __name__ == '__main__':
         main()
 
     except KeyboardInterrupt :
-        print('Exit')
+        sys.exit()
+    except EOFError :
         sys.exit()
 
-    except EOFError :
-        print('Exit')
-        sys.exit()
     finally:
         print('Exiting program.')

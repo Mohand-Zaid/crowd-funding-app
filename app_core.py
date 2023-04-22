@@ -206,7 +206,11 @@ def view_db(email, db):
                 format_project_details(project_details)
         
 
-def login():
+def login(debug=False):
+    if debug :
+        debugger = ('user@debug.com', 'debug')
+        return debugger
+
     email = input("Enter your email: ").lower().strip()
     password = input("Enter your password: ").strip()
 

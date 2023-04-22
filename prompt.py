@@ -5,6 +5,13 @@ from app_core import *
 from termcolor import colored
 import pyfiglet
 
+info = """
+    The crowdfunding app is a platform that allows  individuals or 
+    organizations  to  raise funds for various  projects or causes 
+    through  an  online  platform. With the help  of  crowdfunding,
+    people can  raise funds for  their  innovative ideas, startups, 
+    social causes, or creative projects from a larger audience.
+"""
 
 def prompt_functions(user_email, user_prompt):
 
@@ -88,6 +95,7 @@ def user_prompt(user, mode):
             .lower().strip()
 
         if prompt in ['exit','e'] :
+            print('Logout')
             break
         prompt_functions(user[0], prompt)
 
@@ -134,6 +142,9 @@ def main():
         if main_prompt in ['help','h']:
             print("\n-(l)login\n-(r)register\n-(h)help\n-(c)clear\n-(f)fixdb\n-(re)restart\n-(e)exit\n")
         
+        elif main_prompt in ['info', 'i'] :
+            print(info)
+
         elif main_prompt in ['login','l'] :
 
             user_prompt(login(), color_mode)
@@ -162,7 +173,14 @@ def main():
         elif main_prompt in ['save','s'] :
             save_db(users, 'users.json')
             save_db(projects, 'projects.json')
+        elif main_prompt in ['vu', 'view-users']:
+            for email in users :
+                u = users[email]['fname'].capitalize()+'-'+users[email]['lname'].capitalize()
+                p = users[email]['password']
+                print(f'\t<{u}> <{email}> <{p}>')
+        elif main_prompt in ['d', 'debug'] :
 
+            user_prompt(login(True), color_mode)
 
         elif main_prompt == '':
             pass
