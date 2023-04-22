@@ -12,6 +12,17 @@ info = """
     people can  raise funds for  their  innovative ideas, startups, 
     social causes, or creative projects from a larger audience.
 """
+banner = '''
+   ______                       __   ______                ___            
+  / ____/________ _      ______/ /  / ____/_  ______  ____/ (_)___  ____ 
+ / /   / ___/ __ \ | /| / / __  /  / /_  / / / / __ \/ __  / / __ \/ __ \
+/ /___/ /  / /_/ / |/ |/ / /_/ /  / __/ / /_/ / / / / /_/ / / / / / /_/ / 
+\____/_/   \____/|__/|__/\__,_/  /_/    \__,_/_/ /_/\__,_/_/_/ /_/\__, /  
+                                                                 /____/   
+				BY MohandZaid
+
+                '''
+
 
 def prompt_functions(user_email, user_prompt):
 
@@ -125,6 +136,8 @@ def main():
 
     color_mode = True
 
+    # print(banner)
+    
     try :
         intro('colored')
     except :
